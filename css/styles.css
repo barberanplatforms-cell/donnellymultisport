@@ -23,6 +23,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-h) + 12px);
 }
 
 body {
@@ -41,6 +42,11 @@ svg {
 
 a {
   color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--coral);
+  outline-offset: 3px;
 }
 
 h1,
@@ -84,10 +90,10 @@ p:last-child {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(251, 247, 240, 0.88);
+  background: rgba(251, 247, 240, 0.92);
   backdrop-filter: blur(16px);
   border-bottom: 1px solid transparent;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
 }
 
 .site-header.scrolled {
@@ -124,10 +130,8 @@ p:last-child {
 
 .logo:hover .logo-mark,
 .logo:focus-visible .logo-mark {
-  transform: scale(1.06);
-  filter:
-    drop-shadow(0 4px 10px rgba(224, 122, 95, 0.32))
-    drop-shadow(0 0 8px rgba(34, 112, 64, 0.22));
+  transform: scale(1.04);
+  filter: drop-shadow(0 4px 10px rgba(11, 61, 74, 0.18));
 }
 
 .logo-text {
@@ -157,14 +161,37 @@ p:last-child {
 }
 
 .site-nav a {
+  position: relative;
   text-decoration: none;
   font-size: 0.95rem;
   font-weight: 500;
   color: var(--navy);
+  padding: 0.2rem 0;
+  transition: color 0.2s ease;
 }
 
-.site-nav a:hover {
+.site-nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 2px;
+  background: var(--coral);
+  border-radius: 2px;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s ease;
+}
+
+.site-nav a:hover,
+.site-nav a.is-active {
   color: var(--coral);
+}
+
+.site-nav a:hover::after,
+.site-nav a.is-active::after {
+  transform: scaleX(1);
 }
 
 .nav-toggle {
@@ -183,7 +210,20 @@ p:last-child {
   background: var(--navy);
   margin: 6px 0;
   border-radius: 2px;
-  transition: transform 0.2s ease, opacity 0.2s ease;
+  transform-origin: center;
+  transition: transform 0.22s ease, opacity 0.22s ease;
+}
+
+.nav-toggle[aria-expanded="true"] span:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+
+.nav-toggle[aria-expanded="true"] span:nth-child(2) {
+  opacity: 0;
+}
+
+.nav-toggle[aria-expanded="true"] span:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
 }
 
 .hero {
@@ -206,6 +246,7 @@ p:last-child {
   height: 100%;
   object-fit: cover;
   object-position: center 45%;
+  animation: hero-settle 16s ease-out both;
 }
 
 .hero-bg::after {
@@ -314,11 +355,11 @@ p:last-child {
   font-weight: 600;
   border-radius: 999px;
   padding: 0.85rem 1.3rem;
-  transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease;
+  transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .btn:hover {
-  transform: translateY(-1px);
+  transform: translateY(-2px);
 }
 
 .btn-primary {
@@ -328,6 +369,7 @@ p:last-child {
 
 .btn-primary:hover {
   background: #c9684f;
+  box-shadow: 0 10px 24px rgba(224, 122, 95, 0.32);
 }
 
 .btn-ghost {
@@ -347,6 +389,7 @@ p:last-child {
 
 .btn-light:hover {
   background: #ffb56b;
+  box-shadow: 0 10px 24px rgba(244, 162, 97, 0.28);
 }
 
 .discipline-row {
@@ -382,6 +425,12 @@ p:last-child {
   background: #fff;
   border-radius: 50%;
   box-sizing: border-box;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.discipline-row li:hover .discipline-icon {
+  transform: scale(1.08);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
 }
 
 .intro {
@@ -426,6 +475,11 @@ p:last-child {
   object-fit: cover;
   object-position: center 20%;
   display: block;
+  transition: transform 0.7s ease;
+}
+
+.intro-photo:hover img {
+  transform: scale(1.04);
 }
 
 .section {
@@ -468,6 +522,12 @@ p:last-child {
   border-radius: 18px;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(11, 61, 74, 0.06);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.discipline-photos figure:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px rgba(11, 61, 74, 0.1);
 }
 
 .discipline-photos img {
@@ -475,6 +535,11 @@ p:last-child {
   height: 220px;
   object-fit: cover;
   display: block;
+  transition: transform 0.7s ease;
+}
+
+.discipline-photos figure:hover img {
+  transform: scale(1.05);
 }
 
 .discipline-photos figure:nth-child(1) img {
@@ -501,6 +566,12 @@ p:last-child {
   border-radius: var(--radius);
   overflow: hidden;
   box-shadow: var(--shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.plan-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 22px 56px rgba(11, 61, 74, 0.14);
 }
 
 .plan-meta {
@@ -536,8 +607,25 @@ p:last-child {
 
 .plan-features {
   margin: 0;
-  padding: 2.2rem 2rem 2.2rem 3.2rem;
+  list-style: none;
+  padding: 2.2rem 2rem;
   color: var(--muted);
+}
+
+.plan-features li {
+  position: relative;
+  padding-left: 1.45rem;
+}
+
+.plan-features li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background: var(--coral);
 }
 
 .plan-features li + li {
@@ -570,6 +658,11 @@ p:last-child {
   object-fit: cover;
   object-position: center 12%;
   display: block;
+  transition: transform 0.7s ease;
+}
+
+.about-photo:hover img {
+  transform: scale(1.04);
 }
 
 .about-grid {
@@ -583,6 +676,12 @@ p:last-child {
   border-radius: 18px;
   padding: 1.6rem 1.5rem;
   box-shadow: 0 10px 30px rgba(11, 61, 74, 0.06);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.info-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px rgba(11, 61, 74, 0.1);
 }
 
 .info-card h3 {
@@ -627,6 +726,12 @@ p:last-child {
   box-shadow: 0 10px 30px rgba(11, 61, 74, 0.05);
   border-top: 4px solid var(--gold);
   counter-increment: principle;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.principles li:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px rgba(11, 61, 74, 0.1);
 }
 
 .principles li:nth-child(3n) {
@@ -719,6 +824,13 @@ p:last-child {
   transform: none;
 }
 
+.info-card.is-visible:hover,
+.principles li.is-visible:hover,
+.discipline-photos figure.is-visible:hover,
+.plan-card.is-visible:hover {
+  transform: translateY(-4px);
+}
+
 @keyframes fade-up {
   from {
     opacity: 0;
@@ -740,6 +852,15 @@ p:last-child {
     opacity: 1;
     transform: none;
     filter: blur(0);
+  }
+}
+
+@keyframes hero-settle {
+  from {
+    transform: scale(1.06);
+  }
+  to {
+    transform: scale(1);
   }
 }
 
@@ -776,7 +897,7 @@ p:last-child {
   }
 
   .site-nav {
-    display: none;
+    display: flex;
     position: absolute;
     top: var(--header-h);
     left: 0;
@@ -787,14 +908,26 @@ p:last-child {
     padding: 1rem 1.25rem 1.4rem;
     border-bottom: 1px solid var(--line);
     gap: 0.4rem;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-8px);
+    transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s ease;
   }
 
   .site-nav.open {
-    display: flex;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: none;
   }
 
   .site-nav a {
     padding: 0.7rem 0.2rem;
+  }
+
+  .site-nav a::after {
+    display: none;
   }
 
   .hero-inner,
@@ -827,7 +960,19 @@ p:last-child {
     scroll-behavior: auto;
   }
 
-  .btn:hover {
+  .btn:hover,
+  .info-card:hover,
+  .principles li:hover,
+  .discipline-photos figure:hover,
+  .plan-card:hover,
+  .info-card.is-visible:hover,
+  .principles li.is-visible:hover,
+  .discipline-photos figure.is-visible:hover,
+  .plan-card.is-visible:hover,
+  .intro-photo:hover img,
+  .about-photo:hover img,
+  .discipline-photos figure:hover img,
+  .discipline-row li:hover .discipline-icon {
     transform: none;
   }
 
@@ -835,8 +980,21 @@ p:last-child {
   .logo:hover .logo-mark,
   .logo-text,
   .hero-inner > *,
-  .discipline-row li {
+  .discipline-row li,
+  .hero-bg img {
     animation: none;
+  }
+
+  .intro-photo img,
+  .about-photo img,
+  .discipline-photos img,
+  .discipline-icon,
+  .info-card,
+  .principles li,
+  .discipline-photos figure,
+  .plan-card,
+  .site-nav {
+    transition: none;
   }
 
   .js .reveal,

@@ -26,6 +26,37 @@ nav.querySelectorAll("a").forEach((link) => {
   });
 });
 
+const navLinks = nav.querySelectorAll('a[href^="#"]');
+const pageSections = document.querySelectorAll("main section[id]");
+
+const setActiveNav = (id) => {
+  navLinks.forEach((link) => {
+    link.classList.toggle("is-active", link.getAttribute("href") === `#${id}`);
+  });
+};
+
+setActiveNav("home");
+
+if ("IntersectionObserver" in window && pageSections.length) {
+  const navObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveNav(entry.target.id);
+        }
+      });
+    },
+    { rootMargin: "-45% 0px -50% 0px", threshold: 0 }
+  );
+
+  pageSections.forEach((section) => {
+    const hasLink = [...navLinks].some((link) => link.getAttribute("href") === `#${section.id}`);
+    if (hasLink) {
+      navObserver.observe(section);
+    }
+  });
+}
+
 const revealTargets = document.querySelectorAll(
   ".intro-grid > *, .about-intro > *, .section-head, .discipline-photos figure, .plan-card, .info-card, .about-close, .principles li, .cta-inner"
 );
